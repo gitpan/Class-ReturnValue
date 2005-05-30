@@ -1,4 +1,5 @@
-# Copyright (c) 2002 Jesse Vincent (jesse@bestpractical.com)
+use warnings;
+use strict;
 
 package Class::ReturnValue;
 
@@ -79,7 +80,7 @@ use Test::More;
 
 use Exporter;
 
-use vars qw/$VERSION @EXPORT/;
+use vars qw/$VERSION @EXPORT @ISA/;
 
 @ISA = qw/Exporter/;
 @EXPORT = qw /&return_value/;
@@ -88,7 +89,7 @@ use Devel::StackTrace;
 use Data::Dumper;
 
 
-$VERSION = '0.52';
+$VERSION = '0.53';
 
 
 use overload 'bool' => \&error_condition;
@@ -370,7 +371,7 @@ If there's been an error, return undef. Otherwise return 1
 sub error_condition { 
     my $self = shift;
     if ($self->{'errno'}) {
-            return (0);
+            return (undef);
         }
         elsif (wantarray()) {
             return(@{$self->{'as_array'}});
@@ -408,7 +409,7 @@ sub return_value {
 
 =head1 COPYRIGHT
 
-    Copyright (c) 2002, Jesse Vincent <jesse@bestpractical.com>
+    Copyright (c) 2002,2003,2005 Jesse Vincent <jesse@bestpractical.com>
     You may use, modify, fold, spindle or mutilate this module under
     the same terms as perl itself.
 
@@ -419,6 +420,9 @@ sub return_value {
     below
 
     Error, Exception, Exceptions, Exceptions::Class
+
+    You might also want to look at Contextual::Return, another implementation
+    of the same concept as this module.
 
 =cut
 
